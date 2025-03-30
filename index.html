@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAT Practice Test</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> <!-- Basic Icons -->
+</head>
+<body>
+    <div class="test-interface">
+        <header class="test-header">
+            <div class="header-left">
+                <span id="section-module">Section 1, Module 1: Reading and Writing</span>
+                <span class="directions">Directions <i class="fas fa-chevron-down"></i></span>
+            </div>
+            <div class="header-center">
+                <span id="timer">31:19</span>
+                <button class="control-button" id="hide-button">Hide</button>
+            </div>
+            <div class="header-right">
+                 <button class="control-button icon-button"><i class="fas fa-highlighter"></i> Annotate</button>
+                 <button class="control-button icon-button"><i class="fas fa-ellipsis-h"></i> More</button>
+                 <span class="zoom">100% <i class="fas fa-compress-alt"></i></span>
+            </div>
+        </header>
+
+        <main class="test-main">
+            <section class="question-panel">
+                <div class="panel-controls">
+                    <button class="icon-button-small"><i class="fas fa-expand-arrows-alt"></i></button> <!-- Placeholder Icons -->
+                    <button class="icon-button-small"><i class="fas fa-book-open"></i></button> <!-- Placeholder Icons -->
+                </div>
+                <div class="passage-container">
+                    <p id="passage-text">
+                        <!-- Question passage text will be loaded here -->
+                    </p>
+                </div>
+            </section>
+
+            <section class="answer-panel">
+                <div class="answer-header">
+                    <span class="question-number" id="question-number-display">1</span>
+                    <label class="mark-review">
+                        <input type="checkbox" id="mark-review-checkbox">
+                       <i class="far fa-bookmark"></i> Mark for Review
+                    </label>
+                    <button class="control-button icon-button abc-button">ABC</button> <!-- Placeholder -->
+                </div>
+                 <div class="separator-line"></div>
+                <p class="question-prompt" id="question-prompt">
+                    <!-- Question prompt will be loaded here -->
+                </p>
+                <ul class="answer-options" id="answer-options-list">
+                    <!-- Answer options will be loaded here -->
+                </ul>
+            </section>
+        </main>
+
+        <footer class="test-footer">
+            <div class="footer-left">
+                Summit Tutor <!-- Or Your App Name -->
+            </div>
+            <div class="footer-center">
+                 <div class="progress-bar-container">
+                    <div class="progress-bar-dummy">
+                         <!-- Simple visual representation -->
+                        <span></span><span></span><span></span><span class="y"></span><span></span><span></span><span></span><span class="b"></span><span></span><span></span><span class="y"></span><span></span><span></span><span></span><span class="b"></span><span></span><span></span><span class="y"></span><span></span><span></span><span></span><span class="b"></span><span></span><span></span><span></span>
+                    </div>
+                 </div>
+                <button class="control-button question-counter" id="question-counter-button">
+                    Question 1 of 27 <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="footer-right">
+                <button class="control-button next-button" id="next-button">Next</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
