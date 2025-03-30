@@ -1,0 +1,313 @@
+/* Basic Reset & Body */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+/* Main Interface Container */
+.test-interface {
+    width: 90%;
+    max-width: 1200px;
+    height: 80vh; /* Adjust as needed */
+    min-height: 600px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent content spillover */
+}
+
+/* Header */
+.test-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f8f9fa;
+    font-size: 0.9em;
+}
+
+.header-left, .header-center, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between items */
+}
+
+.header-center {
+    flex-grow: 1; /* Takes up remaining space */
+    justify-content: center; /* Centers timer/hide */
+}
+
+.header-right {
+     justify-content: flex-end;
+}
+
+
+#timer {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+.control-button {
+    padding: 5px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+.control-button:hover {
+    background-color: #eee;
+}
+
+.icon-button i {
+    margin-right: 4px;
+}
+.icon-button-small {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    color: #555;
+}
+
+/* Main Content Area (Split Panel) */
+.test-main {
+    display: flex;
+    flex-grow: 1; /* Takes up available vertical space */
+    border-bottom: 1px solid #e0e0e0;
+    overflow-y: hidden; /* Prevent vertical scroll on main */
+}
+
+.question-panel, .answer-panel {
+    width: 50%;
+    padding: 20px;
+    overflow-y: auto; /* Allow scrolling within panels */
+    position: relative;
+}
+
+.question-panel {
+    border-right: 1px solid #e0e0e0;
+}
+
+.panel-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+
+.passage-container {
+    margin-top: 25px; /* Space below panel controls */
+}
+
+#passage-text {
+    line-height: 1.6;
+    color: #222;
+}
+
+/* Answer Panel Specifics */
+.answer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    /* border-bottom: 1px dashed #ccc; */ /* Dashed line like image */
+}
+.separator-line {
+    border-top: 1px dashed #ccc; /* Dashed line like image */
+    margin-bottom: 15px;
+}
+
+
+.question-number {
+    font-weight: bold;
+    background-color: #333;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.mark-review {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #555;
+}
+.mark-review input[type="checkbox"] {
+   margin-right: 5px;
+   display: none; /* Hide checkbox, use label */
+}
+.mark-review i {
+    margin-right: 5px;
+    font-size: 1.1em;
+}
+/* Style the icon based on checked state if needed (requires JS) */
+.mark-review input[type="checkbox"]:checked + i {
+    font-weight: 900; /* Make bookmark solid */
+    color: #007bff;
+}
+
+
+.abc-button {
+    font-weight: bold;
+    border: 1px solid #555;
+}
+
+.question-prompt {
+    margin-bottom: 20px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.answer-options {
+    list-style: none;
+}
+
+.answer-options li {
+    margin-bottom: 10px;
+}
+
+.answer-options label {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.answer-options label:hover {
+    background-color: #f0f7ff;
+    border-color: #a0cfff;
+}
+
+.answer-options input[type="radio"] {
+    display: none; /* Hide the actual radio button */
+}
+
+.answer-options .option-letter {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 22px;
+    text-align: center;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    margin-right: 12px;
+    font-weight: bold;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.answer-options .option-text {
+    flex-grow: 1;
+}
+
+/* Style for selected answer */
+.answer-options input[type="radio"]:checked + label {
+    background-color: #e0f0ff;
+    border-color: #007bff;
+}
+
+.answer-options input[type="radio"]:checked + label .option-letter {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+
+/* Footer */
+.test-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 15px;
+    background-color: #f8f9fa; /* Slightly different or same as header */
+    font-size: 0.9em;
+    position: relative; /* Needed for progress bar absolute positioning if used */
+}
+
+.footer-left, .footer-center, .footer-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.footer-center {
+    flex-grow: 1;
+    justify-content: center; /* Center items */
+    position: relative; /* For progress bar context */
+}
+
+.footer-left {
+    font-weight: bold;
+}
+
+.next-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 25px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.next-button:hover {
+    background-color: #0056b3;
+}
+
+.question-counter i {
+    margin-left: 5px;
+}
+
+/* Dummy Progress Bar */
+.progress-bar-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -1px; /* Position above footer content slightly */
+    height: 4px; /* Height of the dashed line */
+    /* background-color: pink; */ /* For visualizing */
+    display: flex;
+    justify-content: center; /* Center the dummy bar itself */
+}
+.progress-bar-dummy {
+    display: flex;
+    height: 100%;
+}
+.progress-bar-dummy span {
+    display: inline-block;
+    width: 15px; /* Width of each dash segment */
+    height: 1px; /* Thickness of dashes */
+    background-color: #ccc; /* Default dash color */
+    margin: 0 2px; /* Spacing between dashes */
+    align-self: center; /* Vertically center the 1px line */
+}
+/* Colored dashes */
+.progress-bar-dummy span.y { background-color: #ffeb3b; } /* Yellow */
+.progress-bar-dummy span.b { background-color: #2196f3; } /* Blue */
+
+
+/* Font Awesome basic styling (optional) */
+.fas, .far {
+    line-height: 1; /* Prevent icon size affecting line height */
+}
