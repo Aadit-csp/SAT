@@ -1,172 +1,105 @@
-// --- DATA ---
-// Replace this with your actual questions and answers
-// For the "easy upload", you would fetch this data from a server/file
-const questions = [
-    {
-        passage: "Researchers and conservationists stress that biodiversity loss due to invasive species is ______. For example, people can take simple steps such as washing their footwear after travel to avoid introducing potentially invasive organisms into new environments.",
-        prompt: "Which choice completes the text with the most logical and precise word or phrase?",
-        options: [
-            "preventable", // Correct Answer (Index 0)
-            "undeniable",
-            "common",
-            "concerning"
-        ],
-        correctAnswerIndex: 0 // Example: A is correct
-    },
-    {
-        passage: "The second question's passage text goes here. It might be longer or shorter.",
-        prompt: "What is the primary purpose of the second sentence?",
-        options: [
-            "To provide an example",
-            "To contradict the first sentence",
-            "To introduce a new topic",
-            "To summarize the passage"
-        ],
-        correctAnswerIndex: 0 // Example: A is correct
-    },
-    {
-        passage: "This is the third and final question example.",
-        prompt: "Choose the best option:",
-        options: [
-            "Option A",
-            "Option B",
-            "Option C",
-            "Option D"
-        ],
-        correctAnswerIndex: 2 // Example: C is correct
-    }
-    // Add more question objects here
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realize SAT - Practice Module</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons (optional but useful) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="test-interface fullscreen">
+        <header class="test-header">
+            <div class="header-left">
+                <span id="section-module">Practice Module</span>
+                <!-- Removed Directions -->
+            </div>
+            <div class="header-center">
+                <span id="timer">--:--</span>
+                <button class="control-button" id="hide-button">Hide</button> <!-- Keep Hide for now -->
+            </div>
+            <div class="header-right">
+                 <button class="control-button icon-button"><i class="fas fa-highlighter"></i> Annotate</button>
+                 <button class="control-button icon-button"><i class="fas fa-ellipsis-h"></i> More</button>
+                 <!-- Removed % zoom -->
+            </div>
+        </header>
 
-// --- STATE ---
-let currentQuestionIndex = 0;
-let userAnswers = new Array(questions.length).fill(null); // To store user selections
+        <main class="test-main">
+            <!-- Panels now stack vertically for potential future adjustments,
+                 but will mostly behave like one continuous area with scrolling -->
+            <section class="question-content-area">
+                <div class="panel-controls">
+                   <button class="icon-button-small"><i class="fas fa-expand-arrows-alt"></i></button>
+                   <button class="icon-button-small"><i class="fas fa-book-open"></i></button>
+                 </div>
 
-// --- ELEMENTS ---
-const passageTextElement = document.getElementById('passage-text');
-const questionPromptElement = document.getElementById('question-prompt');
-const answerOptionsListElement = document.getElementById('answer-options-list');
-const questionNumberDisplayElement = document.getElementById('question-number-display');
-const questionCounterButton = document.getElementById('question-counter-button');
-const nextButton = document.getElementById('next-button');
-const timerElement = document.getElementById('timer'); // Timer display
-// Add elements for other controls if you implement their functionality
+                 <div class="question-prompt-area">
+                    <p id="passage-text">
+                        <!-- Question passage text will be loaded here -->
+                    </p>
+                     <div class="separator-line"></div>
+                     <p class="question-prompt" id="question-prompt">
+                         <!-- Question prompt will be loaded here -->
+                     </p>
+                </div>
 
-// --- FUNCTIONS ---
+                <div class="answer-options-area">
+                    <div class="answer-header">
+                        <span class="question-number" id="question-number-display">1</span>
+                        <label class="mark-review">
+                            <input type="checkbox" id="mark-review-checkbox">
+                           <i class="far fa-bookmark"></i> Mark for Review
+                        </label>
+                       <!-- Removed ABC button -->
+                    </div>
+                    <ul class="answer-options" id="answer-options-list">
+                        <!-- Answer options will be loaded here -->
+                    </ul>
+                </div>
+            </section>
+        </main>
 
-function loadQuestion(index) {
-    if (index < 0 || index >= questions.length) {
-        console.error("Invalid question index");
-        return;
-    }
+        <footer class="test-footer">
+            <div class="footer-left">
+                Realize SAT Student
+            </div>
+            <div class="footer-center">
+                 <!-- Removed progress bar -->
+                <button class="control-button question-counter" id="question-overview-button">
+                    Question 1 of -- <i class="fas fa-chevron-up"></i>
+                </button>
+            </div>
+            <div class="footer-right">
+                 <button class="control-button prev-button" id="prev-button" disabled>Previous</button> <!-- Added Previous -->
+                <button class="control-button next-button" id="next-button">Next</button>
+            </div>
+        </footer>
 
-    const question = questions[index];
+        <!-- Question Overview Modal -->
+        <div class="question-overview-modal" id="question-overview-modal">
+            <div class="modal-header">
+                <h2>Questions</h2>
+                <button id="close-modal-button">×</button>
+            </div>
+            <div class="modal-grid" id="modal-question-grid">
+                <!-- Question number boxes will be generated here by JS -->
+            </div>
+             <div class="modal-legend">
+                <span><span class="q-box-legend q-current"></span> Current</span>
+                <span><span class="q-box-legend q-answered"></span> Answered</span>
+                <span><span class="q-box-legend q-unanswered"></span> Unanswered</span>
+                <span><span class="q-box-legend q-marked"><i class="fas fa-bookmark"></i></span> Marked</span>
+            </div>
+        </div>
+        <div class="modal-backdrop" id="modal-backdrop"></div> <!-- For dimming background -->
 
-    // Update Passage and Prompt
-    passageTextElement.innerHTML = question.passage.replace('______', '<span class="blank">______</span>'); // Highlight blank visually
-    questionPromptElement.textContent = question.prompt;
+    </div>
 
-    // Update Question Number Displays
-    questionNumberDisplayElement.textContent = index + 1;
-    questionCounterButton.innerHTML = `Question ${index + 1} of ${questions.length} <i class="fas fa-chevron-up"></i>`;
-
-    // Clear previous options
-    answerOptionsListElement.innerHTML = '';
-
-    // Create and append new options
-    const optionLetters = ['A', 'B', 'C', 'D'];
-    question.options.forEach((option, i) => {
-        const li = document.createElement('li');
-
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = 'answerOption'; // Group radios
-        input.id = `option${i}`;
-        input.value = i; // Store the index as the value
-
-        // Check if this option was previously selected by the user
-        if (userAnswers[currentQuestionIndex] === i) {
-            input.checked = true;
-        }
-
-        // Add event listener to store selection
-        input.addEventListener('change', () => {
-            userAnswers[currentQuestionIndex] = parseInt(input.value);
-            console.log(`Question ${currentQuestionIndex + 1} Answered: ${optionLetters[userAnswers[currentQuestionIndex]]}`);
-        });
-
-
-        const label = document.createElement('label');
-        label.htmlFor = `option${i}`;
-
-        const letterSpan = document.createElement('span');
-        letterSpan.className = 'option-letter';
-        letterSpan.textContent = optionLetters[i];
-
-        const textSpan = document.createElement('span');
-        textSpan.className = 'option-text';
-        textSpan.textContent = option;
-
-        label.appendChild(letterSpan);
-        label.appendChild(textSpan);
-        li.appendChild(input);
-        li.appendChild(label);
-        answerOptionsListElement.appendChild(li);
-    });
-
-    // Update Next Button Text/State
-    if (currentQuestionIndex === questions.length - 1) {
-        nextButton.textContent = 'Finish'; // Or 'Review'
-    } else {
-        nextButton.textContent = 'Next';
-    }
-}
-
-function handleNextClick() {
-    if (currentQuestionIndex < questions.length - 1) {
-        currentQuestionIndex++;
-        loadQuestion(currentQuestionIndex);
-    } else {
-        // End of test logic - e.g., show results, go to review screen
-        alert('Test Finished! (Implement results screen here)');
-        // You could calculate score here using userAnswers and questions[i].correctAnswerIndex
-    }
-}
-
-// --- TIMER (Basic Example) ---
-let timeLeft = 31 * 60 + 19; // 31 minutes 19 seconds from image
-function updateTimer() {
-    const minutes = Math.floor(timeLeft / 60);
-    let seconds = timeLeft % 60;
-    seconds = seconds < 10 ? '0' + seconds : seconds; // Add leading zero
-
-    timerElement.textContent = `${minutes}:${seconds}`;
-
-    if (timeLeft > 0) {
-        timeLeft--;
-    } else {
-        clearInterval(timerInterval);
-        alert("Time's up!");
-        // Add logic for when time runs out
-    }
-}
-
-// --- INITIALIZATION ---
-document.addEventListener('DOMContentLoaded', () => {
-    loadQuestion(currentQuestionIndex); // Load the first question
-
-    // Start Timer
-    const timerInterval = setInterval(updateTimer, 1000); // Update every second
-
-    // Add Event Listeners
-    nextButton.addEventListener('click', handleNextClick);
-
-    // Add listeners for other buttons if needed (Mark for Review, Hide, etc.)
-    const markReviewCheckbox = document.getElementById('mark-review-checkbox');
-    if(markReviewCheckbox) {
-        markReviewCheckbox.addEventListener('change', () => {
-             console.log(`Question ${currentQuestionIndex + 1} Marked for review: ${markReviewCheckbox.checked}`);
-             // Add visual indication or store state if needed
-        });
-    }
-});
+    <script src="test.js"></script>
+</body>
+</html>
